@@ -11,7 +11,7 @@
 	<form role="form" ng-submit="vote()">
 		<div ng-repeat="choice in poll.choices" class="checkbox">
 			<label>
-				<input type="checkbox" name="choice" ng-model="poll.userVote" value="{{choice._id}}">
+				<input type="checkbox" name="choice" ng-model="votes['field_' + $index]" value="{{choice._id}}" />
 				{{choice.text}}
 			</label>
 		</div>
