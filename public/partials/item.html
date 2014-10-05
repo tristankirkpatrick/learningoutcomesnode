@@ -1,0 +1,54 @@
+<div class="page-header">
+	<h1>Learning Outcomes</h1>
+</div>
+<div class="well well-lg">
+	<h3>{{poll.question}}</h3>
+</div>
+
+<div ng-hide="poll.userVoted">
+	<p class="lead">Please check the learning outcome when you think you completely understand:</p>
+
+	<form role="form" ng-submit="vote()">
+		<div ng-repeat="choice in poll.choices" class="checkbox">
+			<label>
+				<input type="checkbox" name="choice" ng-model="poll.userVote" value="{{choice._id}}">
+				{{choice.text}}
+			</label>
+		</div>
+		<p><hr></p>
+		<div class="row">
+			<div class="col-xs-6">
+				<a href="#/polls" class="btn btn-default" role="button">Back to Classrooms</a>
+			</div>
+			<div class="col-xs-6">
+				<button class="btn btn-primary pull-right" type="submit">Vote &raquo;</button>
+			</div>
+		</div>
+	</form>
+</div>
+	
+<div ng-show="poll.userVoted">
+	<table class="result-table">
+		<tr ng-repeat="choice in poll.choices">
+			<td>{{choice.text}}</td>
+			<td>
+				<table style="background-color: lightgreen; color: black; width: {{choice.votes.length/poll.totalVotes*100}}%; text-align: right">
+					<tr><td>{{choice.votes.length}}</td></tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+			
+	<p>
+		<em>
+			{{poll.totalVotes}} students counted so far.
+			<span ng-show="poll.userChoice">You have selected <strong>{{poll.userChoice.text}}</strong>.</span>
+		</em>
+	</p>
+	
+	<p><hr></p>
+	
+	<p><a href="#/polls" class="btn btn-default" role="button"> Back to Classrooms</a><a href="#/polls" class="btn btn-info" role="button"> Export to Spreadsheet</a></p>
+</div>
+
+<p>&nbsp;</p>
