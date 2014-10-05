@@ -7,6 +7,7 @@ function PollListCtrl($scope, Poll) {
 function PollItemCtrl($scope, $routeParams, socket, Poll) {	
 	$scope.poll = Poll.get({pollId: $routeParams.pollId});
 	$scope.votes = [];
+	
 	socket.on('myvote', function(data) {
 		console.dir(data);
 		if(data._id === $routeParams.pollId) {
@@ -18,8 +19,8 @@ function PollItemCtrl($scope, $routeParams, socket, Poll) {
 		console.dir(data);
 		if(data._id === $routeParams.pollId) {
 			console.log('[controller.js] [socket.on] [vote]');
-			console.log(data.choices);
-			console.log(data.totalVotes);
+			alert(data.choices);
+			alert(data.totalVotes);
 			$scope.poll.choices = data.choices;
 			$scope.poll.totalVotes = data.totalVotes;
 		}		
@@ -27,12 +28,19 @@ function PollItemCtrl($scope, $routeParams, socket, Poll) {
 	
 	$scope.vote = function() {
 		var pollId = $scope.poll._id,
-				choiceId = $scope.poll.userVote;
 				choiceId = $scope.votes;
-		console.log('[controllers.js][$scope.vote]');
-		console.log(choiceId)
-		if(choiceId) {
-			var voteObj = { poll_id: pollId, choice: choiceId };
+				var tempChoices = [];
+				for(i = 0 ; i < choiceId.length ; i++)	{
+
+					if(choiceId[i] == true)	{
+
+						tempChoices.push($scope.poll.choices[i]._id);
+					}
+				}
+				alert(tempChoices);
+
+		if(tempChoices.length >= 1) {
+			var voteObj = { poll_id: pollId, choice: tempChoices };
 			socket.emit('send:vote', voteObj);
 		} else {
 			alert('You must select an option to vote for');
